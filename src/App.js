@@ -1,25 +1,27 @@
-import logo from './logo.svg';
-import './App.css';
+import React, {useEffect, useState} from 'react';
+import {useDispatch, useSelector} from "react-redux";
+import {getUserActions} from "./store/User/actions/userGetActions";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+const App = () => {
+    const user = useSelector((state) => state.userReducer.users.data)
+    const dispatch = useDispatch()
+    useEffect(() => {
+        dispatch(getUserActions)
+    },[])
+    console.log(user)
+    return (
+        <div style={{display: 'flex'}}>
+            {
+                user?.map((item) => (
+                    <div style={{border: '2px solid black', width: '200px'}} className='card'>
+                        <h2>{item.first_name}</h2>
+                        <img src={item.avatar} alt=""/>
+                        <span>{item.email}</span>
+                    </div>
+                ))
+            }
+        </div>
+    );
+};
 
 export default App;
